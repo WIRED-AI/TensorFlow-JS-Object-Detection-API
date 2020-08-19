@@ -8,4 +8,7 @@ Accepts url to an image and appends it to the html body and makes an asynchronou
 Upon receiving response from mobilenet model. The results will be appended at the bottom of every image.
 
 Based on the test results, the accuracy was quite convincing keeping in mind that this model has been trained on tonnes of objects. For a better accuracy it will be a pretty good idea 
-to train a model on target objects instead of 1000's of objects.
+to train a model on target objects instead of 1000's of objects. For example, if your motto is to detect cars, lanes, trucks, traffic lights..etc. 
+Train a model from scracth with the objects that are related to cars, lanes, trucks, traffic lights instead animals, food, drink..other objects which are not relavant to your motto.
+
+
