@@ -1,0 +1,146 @@
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- Load the latest version of TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+    <title>Tensorflow Object Detection</title>
+</head>
+
+<body class="bg-light">
+
+
+    <div class="container-fluid">
+
+
+        <h2 class="text-success text-center mt-4 font-monospace border-bottom">Tensorflow Object Detection</h2><br>
+
+
+
+        <section class=" row justify-content-center">
+            
+
+                <div class="col-md-8 ml-2">
+                       <input type="text" class="form-control mb-2" id="imgurl" name="imgurl" placeholder="Enter url here...">
+                    
+                </div> <br>
+
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary mb-2" id="get_image" onclick="loadimage()">Upload</button>
+                </div>
+           
+        </section>
+
+        <hr>
+
+        <div class="container ">
+            <div class="row mt-4 p-4" id="im">
+
+               
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <!-- Add an image that we will use to test -->
+
+    <!-- Load index.js after the content of the page -->
+    <script>
+        //asynchronous call for getting the response from TensorFlow's mobilenet model
+        async function app(id) {
+
+            //hide the get result button
+            $('#' +id).hide();
+
+            //display loading message until a response from the mobilenet is received
+            $('#' +'status' + id).show();
+
+            // wait till the model is loaded.
+            net = await mobilenet.load();
+            
+
+            //get image url
+            const imgEl = document.getElementById('img'+id);
+
+            //pass image url to the model for classification
+            var result = await net.classify(imgEl);
+
+            //convert modelnet return object to JSON format and parse it for ease of access
+            var stringify = JSON.parse(JSON.stringify(result));
+
+            //hide the loading message once the result is available
+            $('#' + 'status' + id).hide();
+
+            //append response
+             $('#'+'result'+id).html('<table class="table table-bordered"><tr><td class="font-monospace font-weight-bold">Result</td><td class="text-info font-weight-bold">'+stringify[0]['className']+'</td></tr><tr><td class="font-monospace font-weight-bold">Score</td><td class="text-success font-weight-bold">'+Number((stringify[0]['probability']).toFixed(2)) * 100 + '%'+'</table>');
+
+         
+        }
+
+
+        //function to load image from the user entered url
+        function loadimage() {
+           
+            var card_id=document.querySelectorAll('#im .card').length;
+          
+            var id=card_id+1;
+            var image = $('#imgurl').val();
+            var cardhead = '<div class="card mr-2 mb-2" style="width: 18rem;"> <img crossorigin src="' + image + '" class="card-img-top" id="img'+id+'">';
+            var cardbody = '<div class="card-body text-center" id="result'+id+'"><div class="spinner-border" role="status" id="status'+id+'" style="display: none;">\
+                            <span class="sr-only">Loading...</span>\
+                        </div><button class="btn btn-success" id="'+id+'" onclick="test(this)">Get Result</button></div></div>';
+            $('#imgurl').val('');
+            $('#im').append(cardhead + cardbody);
+
+        }
+
+        //a function for making a call to tensorflow api, after loading the image from url 
+        function test(btn) {
+            
+           
+            var id = btn.id;
+            
+            app(id);
+            
+        }
+
+       
+    </script>
+  
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+
+</html>
