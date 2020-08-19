@@ -1,4 +1,4 @@
-# TensorFlow-JS-Object-Detection-API
+# TensorFlow-JS-Object-Detection-mobilenet model
 
 A simple user interface for TensorFlow's Open Source Object Detection Model. No server or backend processing was used for moving the images to the folder(This project is totally based
 on image source in the form of an url instead of using a local file from the client)
